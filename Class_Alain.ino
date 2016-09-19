@@ -17,6 +17,14 @@ int LED13=13;
 int var=0;
 int PIN38=38;
 
+char octetReception;
+char caractereReception;
+char octetReceptionProc;
+char caractereReceptionProc;
+String chaineReception, Tram;
+String chaineReceptionProc, TramProc;
+boolean Processing=true;
+
 //---------------------------------
 void setup(){
 
@@ -32,7 +40,7 @@ Serial.begin(9600);
   //--prescelection tempo---10=1sec
   Presc[1]=50;Accu[1]=0;
   var=1;
-  Presc[2]=10;Accu[2]=0;
+  Presc[2]=30;Accu[2]=0;
 T1=millis();
 
 }
@@ -78,8 +86,10 @@ switch (var) {
 TDN[1]=myClassAlain.Ton(Presc[1],Cond[1],Accu[1]);
 TDN[2]=myClassAlain.Ton(Presc[2],Cond[2],Accu[2]);
 
+AffProcessing();
+
 Scan=myClassAlain.TpsScan(T1);
-Serial.println(var);
+//Serial.println(var);
 
 }
 //---------------------------------
@@ -92,3 +102,43 @@ void callback() {
         Accu[2]=Accu[2]+1;
     }
 }
+//---------------------------------
+void AffProcessing() {
+  while (Serial.available() > 0) { 
+  
+     octetReceptionProc = Serial.read(); // lit le 1er octet de la file d'attente
+if (octetReceptionProc == '/') {
+        if (chaineReceptionProc.substring(0, 2) == " ")  {
+
+      chaineReceptionProc = "";
+      //delay(1); // pause
+    }
+    else {
+      caractereReceptionProc = char(octetReceptionProc);
+      chaineReceptionProc = chaineReceptionProc + caractereReceptionProc;
+      //delay(1);
+    }
+  }
+  }
+  
+  if (Processing) {
+    //dtostrf( F8[IndexDebugProc], 5, 3, charVal);
+    //TramProc = charVal;
+    //TramProc = TramProc + "/";
+    
+        
+    Serial.print("var= ");
+    Serial.print(var);
+    Serial.print("/");
+    
+    Serial.print("Accu1= ");
+    Serial.print(Accu[1]);
+    Serial.print("/"); 
+   
+       Serial.print("Accu2= ");
+    Serial.print(Accu[2]);
+    Serial.print("/");  
+    
+        Serial.println();
+        }
+        }

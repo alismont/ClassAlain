@@ -10,7 +10,7 @@ String t=":";
 String[] tag = new String[110];
 
 String TramEcriture="";
-
+int value = 0;
 
 //-----------------------------------------------------------------------------------
 void setup() { // fonction d'initialisation ex�cut�e 1 fois au d�marrage
@@ -38,15 +38,21 @@ void setup() { // fonction d'initialisation ex�cut�e 1 fois au d�marrage
 }
 //------------------------------------------------
 void  draw() { 
-
+  
   if (inString != null) {
     String[] q = splitTokens(inString, "/");
     tag[0]=q[0];//
         tag[1]=q[1];//
                 tag[2]=q[2];//
+    tag[3]=q[3];// 
+    tag[4]=q[4];//
+        tag[5]=q[5];// 
   }
 
   AffichageTags(tag);
+  
+    fill(255);
+  rect(25, 125, 50, 50);
 } 
 
 
@@ -60,13 +66,24 @@ void AffichageTags(String[] tags) {  // This function also does not return a val
     textSize(20);
 
     text(tags[0], 26, 35);
-        text(tags[1], 26, 55);
- text(tags[2], 26, 75);
+    text(tags[1], 26, 55);
+    text(tags[2], 26, 75);
+    text(tags[3], 200, 35);
+    text(tags[4], 200, 55);
+    text(tags[5], 200, 75);
   }
 }
-
+//***********************************
 
 void serialEvent(Serial p) { 
   inString = p.readString();
   //print(inString);
 } 
+
+void mouseClicked() {
+  println(mouseX); println(mouseY);
+  if (mouseX >= 26 & mouseX<=75 & mouseY>=126 & mouseY <=173) {
+    myPort.write("OK/");
+  }
+  
+}

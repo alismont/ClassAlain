@@ -24,6 +24,7 @@ char caractereReceptionProc;
 String chaineReception, Tram;
 String chaineReceptionProc, TramProc;
 boolean Processing=true;
+char charVal[10];
 
 //---------------------------------
 void setup(){
@@ -89,7 +90,7 @@ TDN[2]=myClassAlain.Ton(Presc[2],Cond[2],Accu[2]);
 AffProcessing();
 
 Scan=myClassAlain.TpsScan(T1);
-//Serial.println(var);
+
 
 }
 //---------------------------------
@@ -97,9 +98,11 @@ Scan=myClassAlain.TpsScan(T1);
 void callback() {
     if(Cond[1]){
         Accu[1]=Accu[1]+1;
+            if(Accu[1]>=Presc[1])  Accu[1]=Presc[1];       
     }
     if(Cond[2]){
         Accu[2]=Accu[2]+1;
+            if(Accu[2]>=Presc[2])  Accu[2]=Presc[2];
     }
 }
 //---------------------------------
@@ -108,10 +111,10 @@ void AffProcessing() {
   
      octetReceptionProc = Serial.read(); // lit le 1er octet de la file d'attente
 if (octetReceptionProc == '/') {
-        if (chaineReceptionProc.substring(0, 2) == " ")  {
-
+        if (chaineReceptionProc.substring(0, 2) == "OK")  {
+            digitalWrite(LED13,LOW);
+        }
       chaineReceptionProc = "";
-      //delay(1); // pause
     }
     else {
       caractereReceptionProc = char(octetReceptionProc);
@@ -119,14 +122,10 @@ if (octetReceptionProc == '/') {
       //delay(1);
     }
   }
-  }
+  
   
   if (Processing) {
-    //dtostrf( F8[IndexDebugProc], 5, 3, charVal);
-    //TramProc = charVal;
-    //TramProc = TramProc + "/";
-    
-        
+       
     Serial.print("var= ");
     Serial.print(var);
     Serial.print("/");
@@ -135,9 +134,22 @@ if (octetReceptionProc == '/') {
     Serial.print(Accu[1]);
     Serial.print("/"); 
    
-       Serial.print("Accu2= ");
+    Serial.print("Accu2= ");
     Serial.print(Accu[2]);
-    Serial.print("/");  
+    Serial.print("/"); 
+   
+    dtostrf( Scan, 3, 0, charVal);
+    TramProc = charVal;
+    TramProc = TramProc + "/";
+    Serial.print(TramProc); 
+    
+    Serial.print("TDN[1]= ");
+    Serial.print(TDN[1]);
+    Serial.print("/");
+ 
+    Serial.print("TDN[2]= ");
+    Serial.print(TDN[2]);
+    Serial.print("/");
     
         Serial.println();
         }

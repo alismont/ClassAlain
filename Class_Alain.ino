@@ -25,6 +25,7 @@ String chaineReception, Tram;
 String chaineReceptionProc, TramProc;
 boolean Processing=true;
 char charVal[10];
+String cp5="test";
 
 //---------------------------------
 void setup(){
@@ -114,12 +115,20 @@ if (octetReceptionProc == '/') {
         if (chaineReceptionProc.substring(0, 2) == "OK")  {
             digitalWrite(LED13,LOW);
         }
+        if (chaineReceptionProc.substring(0, 2) == "F1")  {
+            cp5=chaineReceptionProc.substring(2);
+            digitalWrite(LED13,LOW);
+            }
+        if (chaineReceptionProc.substring(0, 2) == "BP")  {
+            cp5=chaineReceptionProc.substring(2);
+            digitalWrite(LED13,LOW);
+        }
       chaineReceptionProc = "";
     }
     else {
       caractereReceptionProc = char(octetReceptionProc);
       chaineReceptionProc = chaineReceptionProc + caractereReceptionProc;
-      //delay(1);
+      delay(10);
     }
   }
   
@@ -149,6 +158,10 @@ if (octetReceptionProc == '/') {
  
     Serial.print("TDN[2]= ");
     Serial.print(TDN[2]);
+    Serial.print("/");
+    
+    Serial.print("cp5= ");
+    Serial.print(cp5);
     Serial.print("/");
     
         Serial.println();
